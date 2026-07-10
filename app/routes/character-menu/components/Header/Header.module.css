@@ -1,0 +1,50 @@
+
+
+
+.header {
+    display: flex;
+    flex-direction: row;
+    padding-right: 8%;
+
+    & nav {
+        height: 100%;
+        & ul {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            
+            & li {
+                position: relative;
+                text-transform: uppercase;
+                padding: 0 10px 30px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+                opacity: .7;
+
+                &:hover {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                &.selected {
+                    opacity: 1;
+
+                    &::after {
+                        --bw: 3px;
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        bottom: calc(var(--bw)*-1);
+                        left: 0;
+                        border-bottom: var(--bw) solid white;
+                    }
+                    
+                }
+                transition: opacity .25s ease-out;
+            }
+            
+        }
+    }
+}
