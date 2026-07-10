@@ -1,0 +1,55 @@
+
+.container {
+    container-type: size;
+    height: 100px;
+    width: fit-content;
+    /* border: 1px solid white; */
+    display: flex;
+    flex-direction: row;
+    /* gap: 15px; */
+}
+
+.visibleItemSlot {
+    height: 100cqh;
+    aspect-ratio: 1;
+    background-color: rgba(166, 166, 166, 0.303);
+    border: 2px solid whitesmoke;
+    flex-shrink: 0;
+}
+
+.itemSlotsContainer {
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    border: 1px solid rgb(255, 123, 123);
+
+    .visibleItemSlotsContainer {
+        padding-left: 15px;
+        height: fit-content;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* gap: 2px; */
+        grid-auto-rows: min-content;
+        width: fit-content;
+    }
+
+    .hiddenItemSlotsContainer {
+        padding-left: 15px;
+        pointer-events: none;
+        position: absolute;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        grid-auto-rows: min-content;
+
+        .hiddenItemSlot {
+            height: 18px;
+            aspect-ratio: 1;
+            background-color: rgba(166, 166, 166, 0.303);
+        }
+    }
+}
+
+
+

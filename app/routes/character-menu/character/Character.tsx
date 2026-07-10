@@ -1,4 +1,4 @@
-import EquipmentSelectBlock from "./GearSelectBlock/EquipmentSelectBlock";
+import EquipmentSelectBlock from "./EquipmentSelectBlock/EquipmentSelectBlock";
 
 
 export default function CharacterScreen()
