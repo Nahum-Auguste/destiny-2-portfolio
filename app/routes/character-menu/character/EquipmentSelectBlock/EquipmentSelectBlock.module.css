@@ -24,27 +24,42 @@
     border: 1px solid rgb(255, 123, 123);
 
     .visibleItemSlotsContainer {
-        padding-left: 15px;
+        /* padding-left: 15px; */
+        --hidden-slot-size: 100cqh;
+        --gap: 2px;
+        --xpad: 0px;
+        width: calc(var(--hidden-slot-size) * 3 + var(--gap) * 2 + var(--xpad));
         height: fit-content;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        /* gap: 2px; */
-        grid-auto-rows: min-content;
-        width: fit-content;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /* border: 1px solid red; */
+        align-items: start;
     }
 
     .hiddenItemSlotsContainer {
-        padding-left: 15px;
+        --hidden-slot-size: 18px;
+        --gap: 2px;
+        --xpad: 0px;
+        width: calc(var(--hidden-slot-size) * 3 + var(--gap) * 2 + var(--xpad));
+        /* padding-left: 15px; */
         pointer-events: none;
         position: absolute;
-        height: 100%;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2px;
-        grid-auto-rows: min-content;
+        height: fit-content;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /* border: 1px solid red; */
+        align-items: start;
+
+        /* display: grid; */
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: var(--gap);
+        /* grid-auto-rows: min-content; */
 
         .hiddenItemSlot {
-            height: 18px;
+            width: var(--hidden-slot-size);
+            height: var(--hidden-slot-size);
             aspect-ratio: 1;
             background-color: rgba(166, 166, 166, 0.303);
         }
