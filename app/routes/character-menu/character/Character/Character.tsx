@@ -15,11 +15,11 @@ export default function Character({helmet,arms,chest,legs,classItem}:Props)
 
     return (
         <>
-            <ArmorPiece meshPaths={helmet?.meshPaths}/>
-            <ArmorPiece meshPaths={arms?.meshPaths}/>
-            <ArmorPiece meshPaths={chest?.meshPaths}/>
-            <ArmorPiece meshPaths={legs?.meshPaths}/>
-            <ArmorPiece meshPaths={classItem?.meshPaths}/>
+            <ArmorPiece texturePaths={helmet?.texturePaths} meshPaths={helmet?.meshPaths}/>
+            <ArmorPiece texturePaths={arms?.texturePaths} meshPaths={arms?.meshPaths}/>
+            <ArmorPiece texturePaths={chest?.texturePaths} meshPaths={chest?.meshPaths}/>
+            <ArmorPiece texturePaths={legs?.texturePaths} meshPaths={legs?.meshPaths}/>
+            <ArmorPiece texturePaths={classItem?.texturePaths} meshPaths={classItem?.meshPaths}/>
         </>
     )
 }

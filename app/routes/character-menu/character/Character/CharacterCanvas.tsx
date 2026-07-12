@@ -44,7 +44,7 @@ export function CanvasContent({helmet,arms,chest,legs,classItem}:Props)
     return (
         <>
             <group ref={orbitallyRotatedGroupRef}>
-                <pointLight position={[0,1.5,.75]} intensity={20}/>
+                <pointLight position={[0,1.5,.75]} intensity={.4}/>
             </group>
             <Character helmet={helmet} arms={arms} chest={chest} legs={legs} classItem={classItem}/>
             <PerspectiveCamera ref={cameraRef} makeDefault position={[0,cameraY,1.5]} fov={95}/>

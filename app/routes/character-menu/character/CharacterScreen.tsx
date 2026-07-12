@@ -52,9 +52,13 @@ export async function loader({request}:LoaderFunctionArgs) : Promise<ArmorModels
                         texturePaths: []
                     }
                 }
-                if (parentName.toLowerCase()==="meshes" || parentName.toLowerCase()==="textures")
+                if (parentName.toLowerCase()==="meshes")
                 {
                     acc[className][setName].meshPaths.push("/" + (path.join(CHARACTER_CONFIG.armorPath,className,setName,parentName,entry.name).replace(/\\/g,"/")));
+                }
+                else if (parentName.toLowerCase()==="textures")
+                {
+                    acc[className][setName].texturePaths.push("/" + (path.join(CHARACTER_CONFIG.armorPath,className,setName,parentName,entry.name).replace(/\\/g,"/")));
                 }
                 else 
                 {
@@ -73,6 +77,11 @@ export async function loader({request}:LoaderFunctionArgs) : Promise<ArmorModels
     }, {} as ArmorModelsPathsPackage)
 
     return data;
+}
+
+type ItemsPackage<T extends Item> = {
+    equipped: T | undefined,
+    unequipped: T[]
 }
 
 function getItemsByTypeFromArmorPathsPackage(classType:CharacterClass,armorType:ArmorPieceType, data: ArmorModelsPathsPackage) : ArmorItem[]
@@ -148,45 +157,65 @@ export default function CharacterScreen()
     // console.log(data);
     
 
-    const [helmetItems, setHelmetItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"helmet",data));
-    const [armItems, setArmItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"arms",data));
-    const [chestItems, setChestItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"chest",data));
-    const [legItems, setLegItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"legs",data));
-    const [classItems, setClassItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"class",data));
+    const [helmetItems, setHelmetItems] = useState({
+        equipped:undefined,
+        unequipped:getItemsByTypeFromArmorPathsPackage(classType,"helmet",data)
+    });
+    const [armItems, setArmItems] = useState({
+        equipped:undefined,
+        unequipped:getItemsByTypeFromArmorPathsPackage(classType,"arms",data)
+    });
+    const [chestItems, setChestItems] = useState({
+        equipped:undefined,
+        unequipped:getItemsByTypeFromArmorPathsPackage(classType,"chest",data)
+    });
+    const [legItems, setLegItems] = useState({
+        equipped:undefined,
+        unequipped:getItemsByTypeFromArmorPathsPackage(classType,"legs",data)
+    });
+    const [classItems, setClassItems] = useState({
+        equipped:undefined,
+        unequipped:getItemsByTypeFromArmorPathsPackage(classType,"class",data)
+    });
 
-    const [helmet,setHelmet] = useState<ArmorItem>();
-    const [arms,setArms] = useState<ArmorItem>();
-    const [chest,setChest] = useState<ArmorItem>();
-    const [legs,setLegs] = useState<ArmorItem>();
-    const [classItem,setClassItem] = useState<ArmorItem>();
+    // const [helmet,setHelmet] = useState<ArmorItem>();
+    // const [arms,setArms] = useState<ArmorItem>();
+    // const [chest,setChest] = useState<ArmorItem>();
+    // const [legs,setLegs] = useState<ArmorItem>();
+    // const [classItem,setClassItem] = useState<ArmorItem>();
 
     // console.log("armitrems",armItems);
     
 
-    const equipItem = (idx:number, items:Item[], setItems:React.Dispatch<React.SetStateAction<any>>, setEquippedItem: React.Dispatch<React.SetStateAction<any>>)=> {
-        if (idx<0 || idx >= items.length) {return}
-        const newItem = items[idx];
+    const equipItem = <T extends Item>(idx:number, items:ItemsPackage<T>, setItems:React.Dispatch<React.SetStateAction<any>>)=> {
+        if (idx<0 || idx >= items.unequipped.length) {return}
+        const newEquipped = items.unequipped[idx];
 
-        if (setEquippedItem)
+       
+        
+
+        if (setItems)
         {
-            setEquippedItem((oi : Item)=>{
-                setItems((l: Item[])=>{
-                    // remove equipped item from unequipped items
-                    const list = l.filter((item,i)=>{
-                        return i!=idx
-                    });
+            setItems((items:ItemsPackage<T>):ItemsPackage<T>=>{
 
-                    // add old equipped item to unequipped items
-                    if (oi)
-                    {
-                        list.push(oi);
-                    }
+                const oldEquipped = items.equipped;
 
-                    return list;
-                })
+                const newUnequippedItems = [...items.unequipped];
+                newUnequippedItems.splice(idx,1);
+                
+
+                if (oldEquipped)
+                {
+                    newUnequippedItems.push(oldEquipped); 
+                }
+
+                const newPack = {
+                    equipped:newEquipped,
+                    unequipped: newUnequippedItems
+                };
 
                 // equip item
-                return newItem;
+                return newPack
             })
         }
         
@@ -194,54 +223,60 @@ export default function CharacterScreen()
 
     
     useEffect(()=>{
-        if (!helmet && helmetItems.length)
+        if (!helmetItems.equipped && helmetItems.unequipped.length)
         {
-            equipItem(0,helmetItems,setHelmetItems,setHelmet);
+            equipItem(0,helmetItems,setHelmetItems);
         }
-        if (!arms && armItems.length)
+        if (!armItems.equipped && armItems.unequipped.length)
         {
-            equipItem(0,armItems,setArmItems,setArms);
+            equipItem(0,armItems,setArmItems);
         }
-        if (!chest && chestItems.length)
+        if (!chestItems.equipped && chestItems.unequipped.length)
         {
-            equipItem(0,chestItems,setChestItems,setChest);
+            equipItem(0,chestItems,setChestItems);
         }
-        if (!legs && legItems.length)
+        if (!legItems.equipped && legItems.unequipped.length)
         {
-            equipItem(0,legItems,setLegItems,setLegs);
+            equipItem(0,legItems,setLegItems);
         }
-        if (!classItem && classItems.length)
+        if (!classItems.equipped && classItems.unequipped.length)
         {
-            equipItem(0,classItems,setClassItems,setClassItem);
+            equipItem(0,classItems,setClassItems);
         }
-    })
+    },[])
+
+    useEffect(()=>{
+        // console.log(legItems);
+        
+    },[legItems])
+    
     
 
     return (
         <div className="w-full h-full relative z-0">
            <div className="absolute z-[-1] w-full h-full bg-gray-800/50">
-                <CharacterCanvas helmet={helmet} arms={arms} chest={chest} legs={legs} classItem={classItem}/>
+                <CharacterCanvas helmet={helmetItems.equipped} arms={armItems.equipped} chest={chestItems.equipped} legs={legItems.equipped} classItem={classItems.equipped}/>
            </div>
             <div style={{padding: `120px ${slotSize * 4.5}px`, gap: slotSize*.3, pointerEvents:'none'}} className={styles.equipmentSelectBlocksContainer}>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
-                    <EquipmentSelectBlock equippedItem={helmet} slotSize={slotSize} items={helmetItems} direction="right"/>
+                    <EquipmentSelectBlock  equippedItem={helmetItems.equipped} slotSize={slotSize} items={helmetItems.unequipped} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
-                    <EquipmentSelectBlock equippedItem={arms} slotSize={slotSize}  items={armItems} direction="right"/>
+                    <EquipmentSelectBlock equippedItem={armItems.equipped} slotSize={slotSize}  items={armItems.unequipped} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
-                    <EquipmentSelectBlock equippedItem={chest} slotSize={slotSize}  items={chestItems} direction="right"/>
+                    <EquipmentSelectBlock equippedItem={chestItems.equipped} slotSize={slotSize}  items={chestItems.unequipped} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
-                    <EquipmentSelectBlock equippedItem={legs} slotSize={slotSize}  items={legItems} direction="right"/>
+                    <EquipmentSelectBlock equipItem={(idx:number)=>{equipItem(idx,legItems,setLegItems)}} equippedItem={legItems.equipped} slotSize={slotSize}  items={legItems.unequipped} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
-                    <EquipmentSelectBlock equippedItem={classItem} slotSize={slotSize}  items={classItems} direction="right"/>
+                    <EquipmentSelectBlock equippedItem={classItems.equipped} slotSize={slotSize}  items={classItems.unequipped} direction="right"/>
                 </div>
             </div>
         </div>

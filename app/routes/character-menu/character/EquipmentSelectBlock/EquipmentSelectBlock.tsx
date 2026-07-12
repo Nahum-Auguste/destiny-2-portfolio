@@ -18,6 +18,7 @@ type Props= {
     items?: Item[];
     direction?: 'left' | 'right';
     slotSize?: number;
+    equipItem?: (idx:number) => void;
 }
 
 // EquipmentSelectBlock({equipment:[{type:"arms",name:"immortal legend"},{type:"chest",name:"immortal legend"}]})
@@ -25,7 +26,7 @@ type Props= {
 const MAX_UNEQUIPED_SLOTS = 9
 const UNHOVER_LEEWAY_TIME = 80;
 
-export default function EquipmentSelectBlock({equippedItem, items = [], direction='right', slotSize=80}:Props)
+export default function EquipmentSelectBlock({equippedItem,equipItem, items = [], direction='right', slotSize=80}:Props)
 {
     // const [items, setItems] = useState(initialItems.filter((item,i)=>i+1<=MAX_UNEQUIPED_SLOTS));
     const [hovered, setHovered] = useState<boolean>(false);
@@ -110,7 +111,7 @@ export default function EquipmentSelectBlock({equippedItem, items = [], directio
         <div style={{'--size':slotSize+"px"} as CSSProperties} className={styles.container}>
             {
                 direction==='left'?
-                <ItemSlots direction={direction} data={items} hovered={hovered} itemsContainerRef={itemsContainerRef}/>
+                <ItemSlots onClick={equipItem} direction={direction} data={items} hovered={hovered} itemsContainerRef={itemsContainerRef}/>
                 : null
             }
             <div ref={equippedItemSlotRef} className={styles.visibleItemSlot}>
@@ -118,14 +119,14 @@ export default function EquipmentSelectBlock({equippedItem, items = [], directio
             </div>
             {
                 direction==='right'?
-                <ItemSlots direction={direction} data={items} hovered={hovered} itemsContainerRef={itemsContainerRef}/>
+                <ItemSlots onClick={equipItem} direction={direction} data={items} hovered={hovered} itemsContainerRef={itemsContainerRef}/>
                 : null
             }
         </div>
     )
 }
 
-function ItemSlots({data,hovered,itemsContainerRef,direction}:{data:Item[],hovered:boolean,direction:'left'|'right',itemsContainerRef:React.RefObject<HTMLDivElement | null>})
+function ItemSlots({onClick=(idx:number)=>{},data,hovered,itemsContainerRef,direction}:{onClick?:(idx:number)=>void,data:Item[],hovered:boolean,direction:'left'|'right',itemsContainerRef:React.RefObject<HTMLDivElement | null>})
 {
     const xpad = 15;
 
@@ -139,7 +140,7 @@ function ItemSlots({data,hovered,itemsContainerRef,direction}:{data:Item[],hover
             <div style={{opacity:hovered?1:0, flexDirection:direction==='left'?'row-reverse':'row','--xpad':xpad + "px",paddingRight:direction==="left"?xpad:0, paddingLeft:direction==="right"?xpad:0} as CSSProperties} ref={itemsContainerRef} className={`${styles.visibleItemSlotsContainer}`}>
                 {
                     data.map((item,i)=>(
-                        <div className={styles.visibleItemSlot} key={i}>
+                        <div onClick={()=>{onClick(i)}} className={styles.visibleItemSlot} key={i}>
                             <p>{item.name}</p>
                         </div>
                     ))
