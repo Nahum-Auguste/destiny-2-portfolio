@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import path from "path"
 import fs from "fs/promises"
 import { CHARACTER_CONFIG } from "../../../../config/character.config";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import CharacterCanvas from "./Character/CharacterCanvas";
+// import { PointLight } from "three";
 
 
 const slotSize = 70;
@@ -84,7 +87,7 @@ function getItemsByTypeFromArmorPathsPackage(classType:CharacterClass,armorType:
         {
             items.push({
                 name:setName.replace("-"," ") + " " + armorType,
-                modelPath:armorPath,
+                meshPath:armorPath,
                 type:armorType,
                 setName:setName,
                 texturePaths:info.texturePaths
@@ -169,11 +172,9 @@ export default function CharacterScreen()
     return (
         <div className="w-full h-full relative z-0">
            <div className="absolute z-[-1] w-full h-full bg-gray-800/50">
-                <Canvas>
-                    <Character helmet={helmet} arms={arms} chest={chest} legs={legs} classItem={classItem}/>
-                </Canvas>
+                <CharacterCanvas helmet={helmet} arms={arms} chest={chest} legs={legs} classItem={classItem}/>
            </div>
-            <div style={{padding: `120px ${slotSize * 4.5}px`, gap: slotSize*.3}} className={styles.equipmentSelectBlocksContainer}>
+            <div style={{padding: `120px ${slotSize * 4.5}px`, gap: slotSize*.3, pointerEvents:'none'}} className={styles.equipmentSelectBlocksContainer}>
                 <div className={styles.equipmentRow}>
                     <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
                     <EquipmentSelectBlock equippedItem={helmet} slotSize={slotSize} items={helmetItems} direction="right"/>

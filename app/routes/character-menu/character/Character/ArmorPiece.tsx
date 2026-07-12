@@ -1,16 +1,29 @@
+import { useGLTF } from "@react-three/drei";
 import type { ArmorPieceType, ArmorSet, CharacterClass } from "../character.types"
+import { useMemo } from "react";
 
 type Props = {
-    type: ArmorPieceType;
-    set: ArmorSet;
-    classType: CharacterClass;
+    meshPath?: string
 }
 
-export default function ArmorPiece({type,set,classType}:Props)
+export default function ArmorPiece({meshPath}:Props)
 {
-    
+    if (!meshPath) return null;
+    const {scene} = useGLTF(meshPath);
+
+    const mesh = useMemo(()=>{
+        return scene.getObjectByProperty('isSkinnedMesh',true);
+    },[meshPath]);
+
+    if (!mesh)
+    {
+        console.error("Error: skinned mesh not found from:",meshPath);
+        return null;
+    }
+
+
 
     return (
-        null
+        <primitive object={mesh}/>
     )
 }

@@ -15,7 +15,7 @@ export type EquipmentType =  'ghost' | 'vehicle' | 'ship' | 'emblem' | 'horn' | 
 export interface Item {
     name:string;
     type: EquipmentType;
-    modelPath: string;
+    meshPath: string;
     texturePaths?: string[];
 }
 

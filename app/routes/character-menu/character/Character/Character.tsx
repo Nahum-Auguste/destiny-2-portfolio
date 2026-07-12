@@ -1,4 +1,5 @@
 import type { ArmorItem } from "../character.types"
+import ArmorPiece from "./ArmorPiece"
 
 type Props = {
     helmet?: ArmorItem,
@@ -13,6 +14,12 @@ export default function Character({helmet,arms,chest,legs,classItem}:Props)
 
 
     return (
-        null
+        <>
+            <ArmorPiece meshPath={helmet?.meshPath}/>
+            <ArmorPiece meshPath={arms?.meshPath}/>
+            <ArmorPiece meshPath={chest?.meshPath}/>
+            <ArmorPiece meshPath={legs?.meshPath}/>
+            <ArmorPiece meshPath={classItem?.meshPath}/>
+        </>
     )
 }
