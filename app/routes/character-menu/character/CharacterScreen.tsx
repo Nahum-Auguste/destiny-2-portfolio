@@ -85,9 +85,51 @@ function getItemsByTypeFromArmorPathsPackage(classType:CharacterClass,armorType:
         const armorPath =  info.meshPaths.find((p)=>p.toLowerCase().includes(armorType))
         if (armorPath)
         {
+            const meshPaths = [];
+
+            switch(armorType)
+            {
+                case "arms":
+                    const upperArmsPath = info.meshPaths.find((p)=>p.toLowerCase().includes('upper'));
+                    const foreArmsPath = info.meshPaths.find((p)=>p.toLowerCase().includes('fore'));
+                    const handsPath = info.meshPaths.find((p)=>p.toLowerCase().includes('hands'))
+                    if (upperArmsPath && foreArmsPath && handsPath)
+                    {
+                        meshPaths.push(upperArmsPath,foreArmsPath,handsPath);
+                    }
+                    break;
+                case "chest":
+                    meshPaths.push(armorPath);
+                    if (classType==="warlock")
+                    {
+                        const skirtPath = info.meshPaths.find((p)=>p.toLowerCase().includes('skirt'))
+
+                        if (skirtPath)
+                        {
+                            meshPaths.push(skirtPath);
+                        }
+                    }
+                    break;
+                case "helmet":
+                    meshPaths.push(armorPath);
+                    const neckPath = info.meshPaths.find((p)=>p.toLowerCase().includes('neck'))
+
+                    if (neckPath)
+                    {
+                        meshPaths.push(neckPath);
+                    }
+                    
+                    break;
+                default:
+                    meshPaths.push(armorPath);
+                    break;
+            }
+
+            if (!meshPaths.length){return}
+
             items.push({
                 name:setName.replace("-"," ") + " " + armorType,
-                meshPath:armorPath,
+                meshPaths,
                 type:armorType,
                 setName:setName,
                 texturePaths:info.texturePaths
@@ -103,6 +145,9 @@ export default function CharacterScreen()
     const classType: CharacterClass = "warlock";
     const data = useLoaderData<typeof loader>();
 
+    // console.log(data);
+    
+
     const [helmetItems, setHelmetItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"helmet",data));
     const [armItems, setArmItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"arms",data));
     const [chestItems, setChestItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"chest",data));
@@ -114,6 +159,9 @@ export default function CharacterScreen()
     const [chest,setChest] = useState<ArmorItem>();
     const [legs,setLegs] = useState<ArmorItem>();
     const [classItem,setClassItem] = useState<ArmorItem>();
+
+    // console.log("armitrems",armItems);
+    
 
     const equipItem = (idx:number, items:Item[], setItems:React.Dispatch<React.SetStateAction<any>>, setEquippedItem: React.Dispatch<React.SetStateAction<any>>)=> {
         if (idx<0 || idx >= items.length) {return}

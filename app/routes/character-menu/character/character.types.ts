@@ -4,6 +4,8 @@ import z from "zod";
 
 export type ArmorPieceType = 'helmet' | 'arms' | 'chest' | 'legs' | 'class';
 
+export type ArmorModelPiece = 'helmet' | 'upperarms' | 'forearms' | 'class' | 'skirt';
+
 export type ArmorSet = 'immortal legend';
 
 export const CharacterClassSchema = z.enum(['warlock','hunter','titan'])
@@ -15,7 +17,7 @@ export type EquipmentType =  'ghost' | 'vehicle' | 'ship' | 'emblem' | 'horn' | 
 export interface Item {
     name:string;
     type: EquipmentType;
-    meshPath: string;
+    meshPaths: string[];
     texturePaths?: string[];
 }
 
