@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import Character from "./Character/Character";
 import { CharacterClassSchema, type ArmorItem, type ArmorPieceType, type CharacterClass, type Item } from "./character.types";
 import { useFetcher, useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import path from "path"
 import fs from "fs/promises"
 import { CHARACTER_CONFIG } from "../../../../config/character.config";
@@ -100,39 +100,99 @@ export default function CharacterScreen()
     const classType: CharacterClass = "warlock";
     const data = useLoaderData<typeof loader>();
 
-    const helmetItems: ArmorItem[] = getItemsByTypeFromArmorPathsPackage(classType,"helmet",data);
-     
+    const [helmetItems, setHelmetItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"helmet",data));
+    const [armItems, setArmItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"arms",data));
+    const [chestItems, setChestItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"chest",data));
+    const [legItems, setLegItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"legs",data));
+    const [classItems, setClassItems] = useState(getItemsByTypeFromArmorPathsPackage(classType,"class",data));
+
+    const [helmet,setHelmet] = useState<ArmorItem>();
+    const [arms,setArms] = useState<ArmorItem>();
+    const [chest,setChest] = useState<ArmorItem>();
+    const [legs,setLegs] = useState<ArmorItem>();
+    const [classItem,setClassItem] = useState<ArmorItem>();
+
+    const equipItem = (idx:number, items:Item[], setItems:React.Dispatch<React.SetStateAction<any>>, setEquippedItem: React.Dispatch<React.SetStateAction<any>>)=> {
+        if (idx<0 || idx >= items.length) {return}
+        const newItem = items[idx];
+
+        if (setEquippedItem)
+        {
+            setEquippedItem((oi : Item)=>{
+                setItems((l: Item[])=>{
+                    // remove equipped item from unequipped items
+                    const list = l.filter((item,i)=>{
+                        return i!=idx
+                    });
+
+                    // add old equipped item to unequipped items
+                    if (oi)
+                    {
+                        list.push(oi);
+                    }
+
+                    return list;
+                })
+
+                // equip item
+                return newItem;
+            })
+        }
+        
+    }
+
     
-    console.log(helmetItems);
+    useEffect(()=>{
+        if (!helmet && helmetItems.length)
+        {
+            equipItem(0,helmetItems,setHelmetItems,setHelmet);
+        }
+        if (!arms && armItems.length)
+        {
+            equipItem(0,armItems,setArmItems,setArms);
+        }
+        if (!chest && chestItems.length)
+        {
+            equipItem(0,chestItems,setChestItems,setChest);
+        }
+        if (!legs && legItems.length)
+        {
+            equipItem(0,legItems,setLegItems,setLegs);
+        }
+        if (!classItem && classItems.length)
+        {
+            equipItem(0,classItems,setClassItems,setClassItem);
+        }
+    })
     
 
     return (
         <div className="w-full h-full relative z-0">
            <div className="absolute z-[-1] w-full h-full bg-gray-800/50">
                 <Canvas>
-                    <Character/>
+                    <Character helmet={helmet} arms={arms} chest={chest} legs={legs} classItem={classItem}/>
                 </Canvas>
            </div>
             <div style={{padding: `120px ${slotSize * 4.5}px`, gap: slotSize*.3}} className={styles.equipmentSelectBlocksContainer}>
                 <div className={styles.equipmentRow}>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={[]} direction="left"/>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={helmetItems} direction="right"/>
+                    <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
+                    <EquipmentSelectBlock equippedItem={helmet} slotSize={slotSize} items={helmetItems} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={[]} direction="left"/>
-                    <EquipmentSelectBlock slotSize={slotSize}  initialItems={[]} direction="right"/>
+                    <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
+                    <EquipmentSelectBlock equippedItem={arms} slotSize={slotSize}  items={armItems} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={[]} direction="left"/>
-                    <EquipmentSelectBlock slotSize={slotSize}  initialItems={[]} direction="right"/>
+                    <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
+                    <EquipmentSelectBlock equippedItem={chest} slotSize={slotSize}  items={chestItems} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={[]} direction="left"/>
-                    <EquipmentSelectBlock slotSize={slotSize}  initialItems={[]} direction="right"/>
+                    <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
+                    <EquipmentSelectBlock equippedItem={legs} slotSize={slotSize}  items={legItems} direction="right"/>
                 </div>
                 <div className={styles.equipmentRow}>
-                    <EquipmentSelectBlock slotSize={slotSize} initialItems={[]} direction="left"/>
-                    <EquipmentSelectBlock slotSize={slotSize}  initialItems={[]} direction="right"/>
+                    <EquipmentSelectBlock slotSize={slotSize} items={[]} direction="left"/>
+                    <EquipmentSelectBlock equippedItem={classItem} slotSize={slotSize}  items={classItems} direction="right"/>
                 </div>
             </div>
         </div>

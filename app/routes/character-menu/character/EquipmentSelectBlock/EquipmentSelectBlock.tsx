@@ -14,8 +14,8 @@ import type { ArmorItem, ArmorPieceType, ArmorSet, Item } from "../character.typ
 
 
 type Props= {
-    initialEquippedItem?: Item | ArmorItem,
-    initialItems?: Item[];
+    equippedItem?: Item | ArmorItem,
+    items?: Item[];
     direction?: 'left' | 'right';
     slotSize?: number;
 }
@@ -25,47 +25,26 @@ type Props= {
 const MAX_UNEQUIPED_SLOTS = 9
 const UNHOVER_LEEWAY_TIME = 80;
 
-export default function EquipmentSelectBlock({initialEquippedItem, initialItems = [], direction='right', slotSize=80}:Props)
+export default function EquipmentSelectBlock({equippedItem, items = [], direction='right', slotSize=80}:Props)
 {
-    const [items, setItems] = useState(initialItems.filter((item,i)=>i+1<=MAX_UNEQUIPED_SLOTS));
+    // const [items, setItems] = useState(initialItems.filter((item,i)=>i+1<=MAX_UNEQUIPED_SLOTS));
     const [hovered, setHovered] = useState<boolean>(false);
     const isEquippedItemHoveredRef = useRef<boolean>(false);
     const isItemsContainerHoveredRef = useRef<boolean>(false);
     const equippedItemSlotRef = useRef<HTMLDivElement>(null);
     const itemsContainerRef = useRef<HTMLDivElement>(null);
-    const [equippedItem, setEquippedItem] = useState(initialEquippedItem);
 
     
     
-    const equipItem = (idx:number)=> {
-        if (idx<0 || idx >= items.length) {return}
-        const newItem = items[idx];
+    
 
-        setEquippedItem((oi)=>{
-            setItems((l)=>{
-                // remove equipped item from unequipped items
-                const list = l.filter((item,i)=>i!=idx);
-
-                // add old equipped item to unequipped items
-                if (oi)
-                {
-                    list.push(oi);
-                }
-
-                return list;
-            })
-
-            // equip item
-            return newItem;
-        })
-    }
-
-    if (!equippedItem && items.length)
-    {
-        equipItem(0);
-    }
-
+    
     useEffect(()=>{
+        // if (!equippedItem && items.length)
+        // {
+        //     equipItem(0);
+        // }
+
         
         const itemsContainer = itemsContainerRef.current;
         const equippedItemSlot = equippedItemSlotRef.current;
@@ -123,7 +102,7 @@ export default function EquipmentSelectBlock({initialEquippedItem, initialItems 
             equippedItemSlot.removeEventListener('mouseleave',handleEquippedItemSlotMouseLeave);
 
             itemsContainer.removeEventListener('mousemove',handleItemsContainerMouseMove);
-            itemsContainer.addEventListener('mouseleave',handleItemsContainerMouseLeave);
+            itemsContainer.removeEventListener('mouseleave',handleItemsContainerMouseLeave);
         }
     },[])
 
