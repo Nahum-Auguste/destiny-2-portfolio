@@ -1,21 +1,21 @@
 
 .container {
-    container-type: size;
-    height: 100px;
+    --size: 100px;
     width: fit-content;
     /* border: 1px solid white; */
     display: flex;
     flex-direction: row;
-    /* gap: 15px; */
+
+    .visibleItemSlot {
+        height: var(--size);
+        aspect-ratio: 1;
+        background-color: rgba(166, 166, 166, 0.303);
+        border: 2px solid whitesmoke;
+        flex-shrink: 0;
+    }
 }
 
-.visibleItemSlot {
-    height: 100cqh;
-    aspect-ratio: 1;
-    background-color: rgba(166, 166, 166, 0.303);
-    border: 2px solid whitesmoke;
-    flex-shrink: 0;
-}
+
 
 .itemSlotsContainer {
     position: relative;
@@ -24,22 +24,22 @@
     border: 1px solid rgb(255, 123, 123);
 
     .visibleItemSlotsContainer {
+        position: absolute;
         /* padding-left: 15px; */
-        --hidden-slot-size: 100cqh;
         --gap: 2px;
         --xpad: 0px;
-        width: calc(var(--hidden-slot-size) * 3 + var(--gap) * 2 + var(--xpad));
+        width: calc(var(--size) * 3 + var(--gap) * 2 + var(--xpad));
         height: fit-content;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        /* border: 1px solid red; */
+        border: 1px solid red;
         align-items: start;
     }
 
     .hiddenItemSlotsContainer {
-        --hidden-slot-size: 18px;
-        --gap: 2px;
+        --hidden-slot-size: calc(var(--size) * .17);
+        --gap: 1px;
         --xpad: 0px;
         width: calc(var(--hidden-slot-size) * 3 + var(--gap) * 2 + var(--xpad));
         /* padding-left: 15px; */

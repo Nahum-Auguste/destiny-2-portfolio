@@ -5,9 +5,10 @@ export default function CharacterMenuLayout()
 {
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full flex flex-col">
             <Header/>
-            <main className="w-full h-full"><Outlet/></main>
+            <main className="w-full flex-1"><Outlet/></main>
         </div>
     )
 }
+
