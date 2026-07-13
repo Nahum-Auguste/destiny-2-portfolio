@@ -2,9 +2,24 @@
 
 
 .header {
+    position: fixed;
     display: flex;
     flex-direction: row;
     padding-right: 8%;
+    top: 0px;
+    z-index: 1;
+    --height: 110px;
+    height: var(--height);
+    --close-time: .6s;
+    
+    &:not(.closed)
+    {
+        animation: open var(--close-time) ease-in-out forwards;
+    }
+
+    &.closed {
+        animation: close var(--close-time) ease-in-out forwards;
+    }
 
     & nav {
         height: 100%;
@@ -46,5 +61,23 @@
             }
             
         }
+    }
+}
+
+@keyframes open {
+    0% {
+        /* top: */
+    }
+    100% {
+        top: 0px;
+    }
+}
+
+@keyframes close {
+    0% {
+        /* top: */
+    }
+    100% {
+        top: calc(var(--height) * -1.1);
     }
 }

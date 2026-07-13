@@ -254,7 +254,7 @@ export default function CharacterScreen()
 
     return (
         <div className="w-full h-full relative z-0">
-           <div className="absolute z-[-1] w-full h-full bg-gray-800/50">
+           <div className="absolute z-[-1] w-full h-full ">
                 <CharacterCanvas helmet={helmetItems.equipped} arms={armItems.equipped} chest={chestItems.equipped} legs={legItems.equipped} classItem={classItems.equipped}/>
            </div>
             <div style={{padding: `120px ${slotSize * 4.5}px`, gap: slotSize*.3, pointerEvents:'none'}} className={styles.equipmentSelectBlocksContainer}>

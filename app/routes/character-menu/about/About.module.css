@@ -1,0 +1,42 @@
+
+
+.pageContainer {
+    position: relative;
+    --padd-right: 75px;
+    padding-right: var(--padd-right);
+    flex-grow: 1;
+    height: 100%;
+    overflow: hidden;
+    /* border: 1px solid white; */
+
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 30%, rgb(0, 0, 0, .9) 100%);
+    /* mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.667) 100%, rgba(0, 0, 0, 0) 10%); */
+
+    .page {
+        --page-color: rgba(0, 0, 0, 0.259);
+        height: 100%;
+        background: linear-gradient( to right,
+            transparent 0%,
+            var(--page-color) 100%
+        );
+        padding: 15px 8% 0 0;
+    }
+
+    .hiddenPage {
+        --i: 0;
+        position: absolute;
+        height: 100%;
+        --width: 20px;
+        width: var(--width);
+        right: calc(var(--padd-right) - var(--width) * (var(--i)) );
+        top: calc(20px * (var(--i)) );
+        --page-color: rgba(0, 0, 0, 0.259);
+        height: 100%;
+        /* box-shadow: inset 8px 0 color-mix(in srgb, var(--page-color), black 50%); */
+        background: linear-gradient( to left,
+            var(--page-color) 30%,
+            color-mix(in srgb, var(--page-color), black 40%) 90%
+        );
+
+    }
+}

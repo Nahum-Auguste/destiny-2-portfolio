@@ -7,16 +7,17 @@ type RouteName = typeof routeNames[number];
 export default function Header()
 {
     const location = useLocation();
+    const path = location.pathname.toLowerCase().replace("-"," ");
 
     return (
-        <header  className={`${styles.header} w-full h-[110px] bg-gray-500`}>
+        <header  className={`${styles.header} ${path.includes('my work') || path.includes('about')?styles.closed:''} w-full bg-gray-500`}>
             <div className="flex-1"/>
             <nav>
                 <ul>
                     {
                         routeNames.map((n:RouteName,i)=>{
                             return (
-                                <li key={i} className={location.pathname.toLowerCase().replace("-"," ").includes(n) ? styles.selected : ''}>
+                                <li key={i} className={path.includes(n) ? styles.selected : ''}>
                                     {
                                         n === "resume" || n === 'contact' ?
                                         <p>{n}</p>
