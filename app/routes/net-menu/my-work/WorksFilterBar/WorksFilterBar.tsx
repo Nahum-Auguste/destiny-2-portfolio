@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 import type { ProjectTag } from "../my-work.types"
-import styles from "./NewsFilterBar.module.css"
+import styles from "./WorksFilterBar.module.css"
 
 type Props = {
     setFilterTags: React.Dispatch<React.SetStateAction<ProjectTag[]>>
