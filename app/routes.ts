@@ -6,8 +6,10 @@ export default [
     index("./routes/home.tsx"),
     layout("./routes/character-menu/CharacterMenuLayout.tsx",[
         route("character","./routes/character-menu/character/CharacterScreen.tsx"),
-        route("my-work","./routes/character-menu/my-work/MyWork.tsx"),
-        route("about","./routes/character-menu/about/About.tsx")
+        route("about-me","./routes/character-menu/about/About.tsx")
     ]),
+    layout("./routes/net-menu/NetMenuLayout.tsx",[
+        route("my-work","./routes/net-menu/my-work/MyWork.tsx")
+    ])
     // route("model-paths","./routes/api/characters/model-paths.ts")
 ] satisfies RouteConfig;

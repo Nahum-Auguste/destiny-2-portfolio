@@ -1,0 +1,24 @@
+
+
+.header {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+    padding: 20px 20px;
+
+    & nav {
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+        text-transform: uppercase;
+
+        & a {
+            opacity: .7;
+        }
+    }
+}

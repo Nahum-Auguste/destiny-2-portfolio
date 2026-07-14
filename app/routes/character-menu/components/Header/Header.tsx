@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router";
 import styles from "./Header.module.css"
 
-const routeNames = ['resume','my work','contact','about','character'] as const;
+const routeNames = ['resume','my work','contact','about me','character'] as const;
 type RouteName = typeof routeNames[number]; 
 
 export default function Header()
