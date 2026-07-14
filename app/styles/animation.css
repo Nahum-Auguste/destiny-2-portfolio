@@ -1,0 +1,40 @@
+@property --new-item-gradient-x {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: true;
+}
+
+@utility newItemOverlay {
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        --s: 100%;
+        --gap: 0%;
+        background: linear-gradient(to bottom right,
+            transparent calc(var(--new-item-gradient-x) - var(--gap) + var(--s)),
+            rgba(255, 255, 255, 0.34) calc(50% + var(--new-item-gradient-x) + var(--s)),
+            transparent calc(100% + var(--new-item-gradient-x) + var(--gap) + var(--s))
+        );
+        
+    }
+}
+
+:root {
+    --new-item-gradient-x: 0%;
+
+    animation: newItemGlow 4s ease-in-out infinite;
+}
+
+@keyframes newItemGlow {
+    0% {
+        --new-item-gradient-x: 0%;
+    }
+    40% {
+        --new-item-gradient-x: calc(-200%);
+    }
+    100% {
+        --new-item-gradient-x: -200%;
+    }
+}

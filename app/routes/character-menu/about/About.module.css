@@ -1,18 +1,124 @@
 
+.pagesContainer {
+    --padd-right: 75px;
+    flex-grow: 1;
+    padding-right: var(--padd-right);
+    max-height: 900px;
+    min-height: 0px;
+    /* overflow-y: hidden; */
+    /* overflow-x: hidden; */
+    pointer-events: none;
+}
 
 .pageContainer {
-    position: relative;
-    --padd-right: 75px;
+    overflow-y: hidden;
+    overflow-x: visible;
+    pointer-events: none;
+
+    .textContainer {
+        overflow-y: scroll;
+        pointer-events: all;
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar {
+            width: 300px;
+        }
+
+        & p {
+            padding-right: 0px;
+        }
+    }
+
+    & nav {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        padding-top: 25px;
+        width: 100%;
+        justify-content: center;
+        overflow: visible;
+
+        .pageNavButtonContainer {
+            
+            /* border-bottom: 4px solid rgba(255, 255, 255, 0.589); */
+
+            
+
+            .pageNavButtonUnderline {
+                width: 0;
+                opacity: 0;
+                height: 4.5px;
+                background-color: rgba(255, 255, 255, 0.615);
+                transition: width .2s ease-in, opacity .4s ease-in;
+
+                &.selected {
+                    opacity: 1;
+                    width: 105%; 
+                }
+            }
+
+            .pageNavButton {
+                position: relative;
+                pointer-events: all;
+                overflow: visible;
+                width: 40px;
+                transition: opacity .2s ease-out;
+                opacity: .5;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 1;
+                }
+
+                &.selected {
+                    opacity: 1;
+                }
+
+                & p {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    line-height: 1em;
+                    font-weight: 800;
+                }
+
+                /* .pageNavButtonImageContainer {
+                    @apply newItemOverlay;
+                } */
+
+                .pageNavButtonOutlineImage {
+                    opacity: 0;
+                    transition: opacity .2s ease-out;
+                    pointer-events: none;
+                }
+
+                &:hover {
+                    .pageNavButtonOutlineImage {
+                        opacity: .9;
+                        /* transition: opacity .2s ease-out; */
+                    }
+                }
+            }
+        }
+
+        
+    }
+}
+
+.pageBackgroundContainer {
+    /* position: relative; */
+    
     padding-right: var(--padd-right);
     flex-grow: 1;
     height: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
+    
     /* border: 1px solid white; */
 
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 30%, rgb(0, 0, 0, .9) 100%);
     /* mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.667) 100%, rgba(0, 0, 0, 0) 10%); */
 
-    .page {
+    .pageBackground {
         --page-color: rgba(0, 0, 0, 0.259);
         height: 100%;
         background: linear-gradient( to right,
@@ -22,7 +128,7 @@
         padding: 15px 8% 0 0;
     }
 
-    .hiddenPage {
+    .hiddenPageBackground {
         --i: 0;
         position: absolute;
         height: 100%;
@@ -38,5 +144,22 @@
             color-mix(in srgb, var(--page-color), black 40%) 90%
         );
 
+    }
+}
+
+
+.imgContainer {
+    height: fit-content;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.081);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.081);
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    
+
+    & img {
+        box-shadow: 5px 47px 45px rgba(0, 0, 0, 0.661);
     }
 }
