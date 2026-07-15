@@ -44,6 +44,7 @@ export default function MyWorkScreen()
                         })
                     }
                 </div>
+                <div className="max-w-[30vw] flex-1"/>
             </div>
         </div>
     )
